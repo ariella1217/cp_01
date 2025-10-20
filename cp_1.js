@@ -98,3 +98,88 @@ form.addEventListener('submit', function(event) {
         alert('The Feedback was submitted!');
     }
 });
+
+// Step 4: Use event bubbling and delegation to manage events from all input fields
+// Get elements
+var form = document.getElementById('myForm');
+var charCount = document.getElementById('charCount');
+var feedbackDisplay = document.getElementById('feedback-display');
+var nameError = document.getElementById('nameError');
+var emailError = document.getElementById('emailError');
+var commentsError = document.getElementById('commentsError');
+
+// Delegation for input events (character count)
+form.addEventListener('input', function(e) {
+    var target = e.target;
+    
+    if (target.id === 'comments') {
+        var count = target.value.length;
+        charCount.textContent = count + ' characters';
+    }
+});
+
+// Delegation for mouseover (show tooltips)
+form.addEventListener('mouseover', function(e) {
+    var target = e.target;
+    
+    if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA') {
+        var tooltip = target.nextElementSibling;
+        if (tooltip && tooltip.className === 'tooltip') {
+            tooltip.style.display = 'block';
+        }
+    }
+});
+
+// Delegation for mouseout (hide tooltips)
+form.addEventListener('mouseout', function(e) {
+    var target = e.target;
+    
+    if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA') {
+        var tooltip = target.nextElementSibling;
+        if (tooltip && tooltip.className === 'tooltip') {
+            tooltip.style.display = 'none';
+        }
+    }
+});
+
+// Function to display feedback
+function displayFeedback(name, email, comments) {
+    var feedbackItem = document.createElement('div');
+    feedbackItem.className = 'feedback-item';
+    feedbackItem.innerHTML = '<strong>Name:</strong> ' + name + 
+                            '<br><strong>Email:</strong> ' + email + 
+                            '<br><strong>Comments:</strong> ' + comments;
+    feedbackDisplay.appendChild(feedbackItem);
+}
+
+// Form submission with validation
+form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    var userName = document.getElementById('userName').value;
+    var userEmail = document.getElementById('userEmail').value;
+    var comments = document.getElementById('comments').value;
+    
+    nameError.textContent = '';
+    emailError.textContent = '';
+    commentsError.textContent = '';
+    
+    var isValid = true;
+    
+    if (userName === '') {
+        nameError.textContent = 'Name is required';
+        isValid = false;
+    } else if (userEmail === '') {
+        emailError.textContent = 'Email is required';
+        isValid = false;
+    } else if (comments === '') {
+        commentsError.textContent = 'Comments are required';
+        isValid = false;
+    } else {
+        displayFeedback(userName, userEmail, comments);
+        form.reset();
+        charCount.textContent = '0 characters';
+        alert('Your feedback was submitted!');
+    }
+});
+
