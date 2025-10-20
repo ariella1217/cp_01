@@ -1,7 +1,7 @@
 
 
 // Step 3: Use DOM event listeners in cp_1.js
-// Get elements
+
 var form = document.getElementById('myForm');
 var userName = document.getElementById('userName');
 var userEmail = document.getElementById('userEmail');
@@ -52,11 +52,10 @@ comments.addEventListener('mouseout', function() {
     tooltip.style.display = 'none';
 });
 
-// Form submission with validation
+
 form.addEventListener('submit', function(event) {
     event.preventDefault();
     
-    // Clear previous errors
     nameError.textContent = '';
     emailError.textContent = '';
     commentsError.textContent = '';
@@ -91,7 +90,6 @@ form.addEventListener('submit', function(event) {
         
         feedbackDisplay.appendChild(feedbackItem);
         
-        // Clear form
         form.reset();
         charCount.textContent = '0 characters';
         
@@ -100,7 +98,7 @@ form.addEventListener('submit', function(event) {
 });
 
 // Step 4: Use event bubbling and delegation to manage events from all input fields
-// Get elements
+
 var form = document.getElementById('myForm');
 var charCount = document.getElementById('charCount');
 var feedbackDisplay = document.getElementById('feedback-display');
@@ -183,3 +181,22 @@ form.addEventListener('submit', function(e) {
     }
 });
 
+// Step 5: Prevent background clicks from triggering form-related events
+
+var form = document.getElementById('myForm');
+
+// Prevent form clicks from bubbling to parent elements
+form.addEventListener('click', function(event) {
+    event.stopPropagation();
+});
+
+// Prevent form submit from bubbling to parent elements
+form.addEventListener('submit', function(event) {
+    event.preventDefault(); // Prevent default form submission
+    event.stopPropagation();
+    alert('Form submitted!');
+});
+
+document.body.addEventListener('click', function() {
+    console.log('Body clicked - form clicks are stopped from reaching here');
+});
